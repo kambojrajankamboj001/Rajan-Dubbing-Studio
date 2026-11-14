@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rajan Video Dubbing Studio - 30 Language</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0f0f1a;color:#fff;padding:12px}
+h1{text-align:center;color:#ffcc00;font-size:26px;padding:15px 0}
+h1 span{color:#fff}
+p.sub{text-align:center;color:#aaa;margin-bottom:12px}
+.box{background:#1e1e32;border-radius:14px;padding:16px;margin-bottom:12px}
+label{color:#ffcc00;font-weight:bold;font-size:14px}
+video{width:100%;border-radius:10px;background:#000;margin-top:8px;max-height:280px}
+textarea{width:100%;height:180px;margin-top:8px;background:#111122;color:#fff;border:1px solid #444;border-radius:10px;padding:12px;font-size:16px}
+select,input{width:100%;margin-top:8px;padding:12px;background:#111122;color:#fff;border:1px solid #444;border-radius:10px;font-size:15px}
+button{width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:bold;margin-top:10px;cursor:pointer}
+.play{background:#ffcc00;color:#000}
+.stop{background:#ff3b30;color:#fff}
+.down{background:#00c853;color:#fff}
+.row{display:flex;gap:10px}.row button{flex:1}
+small{color:#aaa;line-height:1.5}
+.progress{width:100%;height:10px;background:#333;border-radius:5px;margin-top:10px;overflow:hidden}
+#bar{height:100%;width:0%;background:#ffcc00}
+</style>
+</head>
+<body>
+<h1>🎬 RAJAN <span>VIDEO DUBBING STUDIO</span></h1>
+<p class="sub">30 Language | 3 Hour Video | Audio Download</p>
+
+<div class="box">
+<label>1. Apni Video Upload Karo (3 Hour Tak):</label>
+<input type="file" id="videoFile" accept="video/*" onchange="loadVideo(event)">
+<video id="videoPlayer" controls></video>
+<small>Video yahan dikhegi. Pehle video chalao, usko suno, phir neeche uska script likho.</small>
+</div>
+
+<div class="box">
+<label>2. Yahan Video Ka Script / Dialogue Likho (Kitna Bhi Lamba - 3 Ghante Ka Bhi):</label>
+<textarea id="text" placeholder="Yahan poori video ka script likho... Jitna lamba likhoge, utni der dubbing hogi.">Namaste dosto, swagat hai aapka Rajan Dubbing Studio me. Aaj hum is video ki dubbing karenge.</textarea>
+<p style="margin-top:8px;color:#00e5ff" id="count">Words: 0 | Andaza Time: 0 Minute</p>
+</div>
+
+<div class="box">
+<label>3. 30 Language Me Se Chuno:</label>
+<select id="lang">
+<option value="hi-IN">1. Hindi - हिन्दी</option>
+<option value="pa-IN">2. Punjabi - ਪੰਜਾਬੀ</option>
+<option value="en-IN">3. English (India)</option>
+<option value="en-US">4. English (USA)</option>
+<option value="en-GB">5. English (UK)</option>
+<option value="ur-IN">6. Urdu - اردو</option>
+<option value="bn-IN">7. Bengali - বাংলা</option>
+<option value="ta-IN">8. Tamil - தமிழ்</option>
+<option value="te-IN">9. Telugu - తెలుగు</option>
+<option value="mr-IN">10. Marathi - मराठी</option>
+<option value="gu-IN">11. Gujarati - ગુજરાતી</option>
+<option value="kn-IN">12. Kannada - ಕನ್ನಡ</option>
+<option value="ml-IN">13. Malayalam - മലയാളം</option>
+<option value="or-IN">14. Odia - ଓଡ଼ିଆ</option>
+<option value="as-IN">15. Assamese - অসমীয়া</option>
+<option value="ne-NP">16. Nepali - नेपाली</option>
+<option value="es-ES">17. Spanish - Español</option>
+<option value="fr-FR">18. French - Français</option>
+<option value="de-DE">19. German - Deutsch</option>
+<option value="it-IT">20. Italian - Italiano</option>
+<option value="pt-PT">21. Portuguese - Português</option>
+<option value="ru-RU">22. Russian - Русский</option>
+<option value="ja-JP">23. Japanese - 日本語</option>
+<option value="ko-KR">24. Korean - 한국어</option>
+<option value="zh-CN">25. Chinese - 中文</option>
+<option value="ar-SA">26. Arabic - العربية</option>
+<option value="tr-TR">27. Turkish - Türkçe</option>
+<option value="nl-NL">28. Dutch - Nederlands</option>
+<option value="id-ID">29. Indonesian</option>
+<option value="th-TH">30. Thai - ไทย</option>
+</select>
+
+<label style="display:block;margin-top:12px">4. Awaaz Chuno:</label>
+<select id="voice"></select>
+
+<label style="display:block;margin-top:12px">Speed:</label>
+<input type="range" id="speed" min="0.5" max="1.5" step="0.1" value="1">
+
+<div class="progress"><div id="bar"></div></div>
+<p id="status" style="margin-top:8px;color:#ffcc00">Ready Hai...</p>
+
+<div class="row">
+<button class="play" onclick="startDubbing()">▶️ DUBBING SHURU KARO</button>
+<button class="stop" onclick="stopDubbing()">⏹️ ROKO</button>
+</div>
+<button class="down" onclick="downloadAudio()">⬇️ DUBBING AUDIO DOWNLOAD KARO</button>
+<small>Note: Download ke liye pehle ek baar PLAY dabana padega, phir Audio Record hoga. 3 Ghante ki video ke liye tab ko band mat karna.</small>
+</div>
+
+<div class="box">
+<h3 style="color:#ffcc00">🔥 3 Ghante Ki Video Kaise Dub Karoge?</h3>
+<p style="color:#ccc;line-height:1.7;margin-top:8px">
+1. Video Upload Karo<br>
+2. Uska Script Likho (Lamba)<br>
+3. Language Chuno, PLAY Dabao<br>
+4. Audio Download Karo<br>
+5. CapCut / Kinemaster me jao -> Video daalo -> Uski purani awaaz Mute karo -> Ye Download wali Audio daal do. HO GAYA!
+</p>
+</div>
+
+<script>
+let voices=[], chunks=[], current=0, isPlaying=false, mediaRecorder, audioChunks=[];
+function loadVideo(e){
+let f=e.target.files[0];
+if(f){document.getElementById('videoPlayer').src=URL.createObjectURL(f);}
+}
+document.getElementById('text').addEventListener('input',function(){
+let w=this.value.trim().split(/\s+/).length;
+if(this.value.trim()=="") w=0;
+let min=(w/150).toFixed(1);
+document.getElementById('count').innerText="Words: "+w+" | Andaza Time: "+min+" Minute";
+});
+function loadVoices(){
+voices=speechSynthesis.getVoices();
+let v=document.getElementById('voice'); v.innerHTML='';
+voices.forEach((vo,i)=>{let o=document.createElement('option');o.value=i;o.textContent=vo.name+' ('+vo.lang+')';v.appendChild(o);});
+}
+speechSynthesis.onvoiceschanged=loadVoices; loadVoices();
+function startDubbing(){
+speechSynthesis.cancel();
+let txt=document.getElementById('text').value;
+if(!txt){alert('Pehle Script Likho Bhai!');return;}
+// Lambi script ko tukdo me todo taaki 3 ghante tak ruke nahi
+chunks=txt.match(/.{1,180}/g); current=0; isPlaying=true;
+document.getElementById('status').innerText="Dubbing Chal Rahi Hai... Part 1 / "+chunks.length;
+// Audio Record Shuru - Download ke liye
+startRecording();
+speakNext();
+}
+function speakNext(){
+if(!isPlaying || current>=chunks.length){
+document.getElementById('status').innerText="✅ Dubbing Khatam! Ab Download Dabao.";
+if(mediaRecorder && mediaRecorder.state=="recording") mediaRecorder.stop();
+return;
+}
+let u=new SpeechSynthesisUtterance(chunks[current]);
+u.lang=document.getElementById('lang').value;
+u.rate=document.getElementById('speed').value;
+let vi=document.getElementById('voice').value;
+if(voices[vi]) u.voice=voices[vi];
+u.onend=()=>{current++; let p=(current/chunks.length*100); document.getElementById('bar').style.width=p+"%"; document.getElementById('status').innerText="Dubbing Chal Rahi Hai... Part "+(current+1)+" / "+chunks.length; speakNext();}
+speechSynthesis.speak(u);
+}
+function stopDubbing(){isPlaying=false; speechSynthesis.cancel(); document.getElementById('status').innerText="⏹️ Ruk Gayi"; if(mediaRecorder && mediaRecorder.state=="recording") mediaRecorder.stop();}
+async function startRecording(){
+try{
+let stream=await navigator.mediaDevices.getDisplayMedia({audio:true, video:false});
+mediaRecorder=new MediaRecorder(stream); audioChunks=[];
+mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
+mediaRecorder.onstop=()=>{let blob=new Blob(audioChunks,{type:'audio/webm'}); let url=URL.createObjectURL(blob); window.myAudioUrl=url; document.getElementById('status').innerText="✅ Audio Record Ho Gaya! Ab Download Dabao.";}
+mediaRecorder.start();
+}catch(e){console.log("Recording allow nahi hua, sirf sunai dega. Download ke liye Screen Record use karo.");}
+}
+function downloadAudio(){
+if(window.myAudioUrl){let a=document.createElement('a'); a.href=window.myAudioUrl; a.download='Rajan-Dubbing-Audio.webm'; a.click();}
+else{alert('Pehle ek baar Dubbing PLAY karo, phir Download hoga. Ya Screen Recording karke audio le lo. Ye sabse aasan tarika hai.');}
+}
+</script>
+</body>
+</html>
