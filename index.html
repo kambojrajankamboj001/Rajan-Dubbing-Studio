@@ -27,7 +27,7 @@ small{color:#aaa;line-height:1.5}
 </head>
 <body>
 <h1>🎬 RAJAN <span>VIDEO DUBBING STUDIO</span></h1>
-<p class="sub">30 Language | 3 Hour Video | Audio Download</p>
+<p class="sub">30 Language | 3 Hour Video | Audio Download | No Login</p>
 
 <div class="box">
 <label>1. Apni Video Upload Karo (3 Hour Tak):</label>
@@ -38,7 +38,7 @@ small{color:#aaa;line-height:1.5}
 
 <div class="box">
 <label>2. Yahan Video Ka Script / Dialogue Likho (Kitna Bhi Lamba - 3 Ghante Ka Bhi):</label>
-<textarea id="text" placeholder="Yahan poori video ka script likho... Jitna lamba likhoge, utni der dubbing hogi.">Namaste dosto, swagat hai aapka Rajan Dubbing Studio me. Aaj hum is video ki dubbing karenge.</textarea>
+<textarea id="text" placeholder="Yahan poori video ka script likho...">Namaste dosto, swagat hai aapka Rajan Dubbing Studio me. Aaj hum is video ki dubbing karenge.</textarea>
 <p style="margin-top:8px;color:#00e5ff" id="count">Words: 0 | Andaza Time: 0 Minute</p>
 </div>
 
@@ -127,10 +127,8 @@ function startDubbing(){
 speechSynthesis.cancel();
 let txt=document.getElementById('text').value;
 if(!txt){alert('Pehle Script Likho Bhai!');return;}
-// Lambi script ko tukdo me todo taaki 3 ghante tak ruke nahi
 chunks=txt.match(/.{1,180}/g); current=0; isPlaying=true;
 document.getElementById('status').innerText="Dubbing Chal Rahi Hai... Part 1 / "+chunks.length;
-// Audio Record Shuru - Download ke liye
 startRecording();
 speakNext();
 }
@@ -156,11 +154,11 @@ mediaRecorder=new MediaRecorder(stream); audioChunks=[];
 mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
 mediaRecorder.onstop=()=>{let blob=new Blob(audioChunks,{type:'audio/webm'}); let url=URL.createObjectURL(blob); window.myAudioUrl=url; document.getElementById('status').innerText="✅ Audio Record Ho Gaya! Ab Download Dabao.";}
 mediaRecorder.start();
-}catch(e){console.log("Recording allow nahi hua, sirf sunai dega. Download ke liye Screen Record use karo.");}
+}catch(e){console.log("Recording allow nahi hua, sirf sunai dega.");}
 }
 function downloadAudio(){
 if(window.myAudioUrl){let a=document.createElement('a'); a.href=window.myAudioUrl; a.download='Rajan-Dubbing-Audio.webm'; a.click();}
-else{alert('Pehle ek baar Dubbing PLAY karo, phir Download hoga. Ya Screen Recording karke audio le lo. Ye sabse aasan tarika hai.');}
+else{alert('Pehle ek baar Dubbing PLAY karo, phir Download hoga.');}
 }
 </script>
 </body>
