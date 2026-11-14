@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rajan Video Dubbing Studio - YouTube + Upload</title>
+<title>Rajan Video Dubbing Studio</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#0f0f1a;color:#fff;padding:12px}
@@ -15,6 +15,7 @@ label{color:#ffcc00;font-weight:bold;font-size:14px}
 video,iframe{width:100%;border-radius:10px;background:#000;margin-top:8px;min-height:250px;border:none}
 textarea{width:100%;height:180px;margin-top:8px;background:#111122;color:#fff;border:1px solid #444;border-radius:10px;padding:12px;font-size:16px}
 select,input{width:100%;margin-top:8px;padding:12px;background:#111122;color:#fff;border:1px solid #444;border-radius:10px;font-size:15px}
+#langSearch{background:#fff;color:#000;border:2px solid #ffcc00;font-weight:bold}
 button{width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:bold;margin-top:10px;cursor:pointer}
 .play{background:#ffcc00;color:#000}
 .stop{background:#ff3b30;color:#fff}
@@ -28,33 +29,35 @@ small{color:#aaa;line-height:1.5}
 </head>
 <body>
 <h1>🎬 RAJAN <span>VIDEO DUBBING STUDIO</span></h1>
-<p class="sub">YouTube Link + Upload | 30 Language | 3 Hour Video</p>
+<p class="sub">YouTube Link + Upload | 30 Language Search | 3 Hour Video</p>
 
 <div class="box" style="border:2px solid #ff0000">
-<label style="color:#ff5252">🔴 YouTube Se Video Dub Karo (Naya Option):</label>
-<input type="text" id="ytLink" placeholder="Yahan YouTube video ka link paste karo - jaise https://youtu.be/...">
+<label style="color:#ff5252">🔴 YouTube Se Video Dub Karo:</label>
+<input type="text" id="ytLink" placeholder="Yahan YouTube video ka link paste karo">
 <button class="yt" onclick="loadYouTube()">▶️ YOUTUBE VIDEO LOAD KARO</button>
-<small>Video neeche chalegi. Uska Mute button daba dena, phir apni dubbing chalegi. YouTube wali video download nahi hogi, sirf teri dubbing wali awaaz download hogi.</small>
 <div id="ytBox" style="display:none">
 <iframe id="ytPlayer" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
 </div>
 </div>
 
 <div class="box">
-<label>1. YA Apni Video Upload Karo (3 Hour Tak):</label>
+<label>1. YA Apni Video Upload Karo:</label>
 <input type="file" id="videoFile" accept="video/*" onchange="loadVideo(event)">
 <video id="videoPlayer" controls></video>
 </div>
 
 <div class="box">
-<label>2. Yahan Video Ka Script / Dialogue Likho:</label>
-<textarea id="text" placeholder="YouTube video ko dekh ke yahan uska script likho...">Namaste dosto, swagat hai aapka Rajan Dubbing Studio me. Aaj hum is video ki dubbing karenge.</textarea>
+<label>2. Yahan Video Ka Script Likho:</label>
+<textarea id="text" placeholder="Yahan script likho...">Namaste dosto, swagat hai aapka Rajan Dubbing Studio me.</textarea>
 <p style="margin-top:8px;color:#00e5ff" id="count">Words: 0 | Andaza Time: 0 Minute</p>
 </div>
 
 <div class="box">
-<label>3. 30 Language Me Se Chuno:</label>
-<select id="lang">
+<label>3. Language Chuno (Search Karke):</label>
+<!-- YE NAYA SEARCH WALA OPTION HAI -->
+<input type="text" id="langSearch" placeholder="🔍 Language Search Karo - jaise Hindi, Tamil, English..." oninput="filterLang()">
+<small style="color:#ffcc00">Upar likhte hi neeche wali list chhoti ho jayegi. Phir neeche se select karo.</small>
+<select id="lang" size="5" style="height:150px">
 <option value="hi-IN">1. Hindi - हिन्दी</option>
 <option value="pa-IN">2. Punjabi - ਪੰਜਾਬੀ</option>
 <option value="en-IN">3. English (India)</option>
@@ -86,6 +89,7 @@ small{color:#aaa;line-height:1.5}
 <option value="id-ID">29. Indonesian</option>
 <option value="th-TH">30. Thai - ไทย</option>
 </select>
+<button onclick="clearSearch()" style="background:#333;color:#fff;padding:8px;font-size:13px">❌ Search Saaf Karo - Sab Language Dikhao</button>
 
 <label style="display:block;margin-top:12px">4. Awaaz Chuno:</label>
 <select id="voice"></select>
@@ -101,19 +105,6 @@ small{color:#aaa;line-height:1.5}
 <button class="stop" onclick="stopDubbing()">⏹️ ROKO</button>
 </div>
 <button class="down" onclick="downloadAudio()">⬇️ DUBBING AUDIO DOWNLOAD KARO</button>
-<small>Note: Download ke liye pehle ek baar PLAY dabana padega.</small>
-</div>
-
-<div class="box">
-<h3 style="color:#ffcc00">🔥 YouTube Video Kaise Dub Karoge?</h3>
-<p style="color:#ccc;line-height:1.7;margin-top:8px">
-1. YouTube ka link paste karo -> LOAD dabao<br>
-2. Video chalegi, usko Mute karo<br>
-3. Uska Script likho<br>
-4. Language Chuno, PLAY Dabao<br>
-5. Audio Download Karo<br>
-6. CapCut me jao -> YouTube video daalo -> Mute karo -> Ye Audio daal do. HO GAYA!
-</p>
 </div>
 
 <script>
@@ -130,7 +121,21 @@ else if(link.includes('live/')){id=link.split('live/')[1].split(/[?&]/)[0];}
 else {alert('Ye YouTube ka sahi link nahi lag raha!');return;}
 document.getElementById('ytBox').style.display='block';
 document.getElementById('ytPlayer').src="https://www.youtube.com/embed/"+id;
-document.getElementById('ytBox').scrollIntoView({behavior:'smooth'});
+}
+// YE NAYA SEARCH WALA FUNCTION HAI
+function filterLang(){
+let s=document.getElementById('langSearch').value.toLowerCase();
+let sel=document.getElementById('lang');
+for(let i=0;i<sel.options.length;i++){
+let txt=sel.options[i].text.toLowerCase();
+if(txt.includes(s)){sel.options[i].style.display='';}
+else{sel.options[i].style.display='none';}
+}
+}
+function clearSearch(){
+document.getElementById('langSearch').value='';
+let sel=document.getElementById('lang');
+for(let i=0;i<sel.options.length;i++){sel.options[i].style.display='';}
 }
 document.getElementById('text').addEventListener('input',function(){let w=this.value.trim().split(/\s+/).length;if(this.value.trim()=="") w=0;let min=(w/150).toFixed(1);document.getElementById('count').innerText="Words: "+w+" | Andaza Time: "+min+" Minute";});
 function loadVoices(){voices=speechSynthesis.getVoices();let v=document.getElementById('voice');v.innerHTML='';voices.forEach((vo,i)=>{let o=document.createElement('option');o.value=i;o.textContent=vo.name+' ('+vo.lang+')';v.appendChild(o);});}
